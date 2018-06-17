@@ -2,6 +2,8 @@ const path = require('path');
 const fs = require('fs');
 
 const chokidar = require('chokidar');
+const encoding = require('encoding-japanese');
+const iconv = require('iconv-lite');
 const chalk = require('chalk');
 
 const textlint = require('./textlint.js');
@@ -20,9 +22,22 @@ if (! fs.existsSync(resolvedPath)) {
 
 console.log("start watch at %s ...", resolvedPath);
 
-chokidar.watch(resolvedPath).on('change', (path, stats) => {
+chokidar.watch(resolvedPath).on('change', (filepath, stats) => {
   console.log("file change at %s\n", stats.mtime);
-  textlint(path);
-  htmlhint(path);
+  fs.readFile(filepath, (err, data) => {
+    const charset = encoding.detect(data);
+    let text;
+    console.log(charset)
+    if (charset == 'SJIS') {
+      text = iconv.decode(data, 'Shift_JIS');
+    } else if (charset == 'UTF8') {
+      text = data.toString('utf-8');
+    } else {
+      throw "no implementation charset encoding: " + charset;
+    }
+    htmlhint(text);
+    const ext = path.extname(filepath);
+    textlint(text ,ext);
+  });
 });
 
