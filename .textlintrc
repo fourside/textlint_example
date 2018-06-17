@@ -1,0 +1,34 @@
+{
+  "filters": {},
+  "rules": {
+    "ja-no-abusage": true,
+    "ja-no-mixed-period": true,
+    "ja-no-redundant-expression": true,
+    "ja-no-weak-phrase": true,
+    "ja-unnatural-alphabet": true,
+    "ng-word": {
+      "words": ["Null", "NULL", "当たり", "現われる", "あらわす", "以下のとおり", "一斉", "一旦", "何時も", "入替え", "入替", "所謂", "インタフェース", "ウィルス", "押す", "クリック", "行なう", "お奨め", "恐らく", "及び", "及ぼす", "掛かる", "くくる", "括る", "箇所", "ヶ所", "稼動", "コンマ", "書きます", "下さい", "事が", "事を", "毎", "様々", "更に", "閾値", "従って", "既に", "全て", "フルパス", "但し", "例えば", "度", "為", "繋ぐ", "出来る", "共に", "則って", "置く", "貼付け", "貼付", "引継ぎ", "引継", "紐付く", "他", "程", "又は", "全く", "見なす", "最も", "読込み", "読込", "割当て", "割当", "分かる", "余程", "した後", "の後", "し直す", "済", "つき", "つけ", "と言った", "の時", "の方", "を元に", "を基に"
+      ]
+    },
+    "no-double-negative-ja": true,
+    "no-doubled-joshi": {
+        "min_interval" : 1,
+        "strict": false,
+        "allow": []
+    },
+    "no-dropping-the-ra": true,
+    "no-hankaku-kana": true,
+    "no-mix-dearu-desumasu": {
+         "preferInHeader": "ですます",
+         "preferInBody": "ですます",
+         "preferInList": "ですます",
+         "strict": true
+     },
+    "no-mixed-zenkaku-and-hankaku-alphabet": true,
+    "no-nfd": true,
+    "prefer-tari-tari": true
+  },
+  "plugins": [
+    "html"
+  ]
+}
