@@ -27,7 +27,6 @@ chokidar.watch(resolvedPath).on('change', (filepath, stats) => {
   fs.readFile(filepath, (err, data) => {
     const charset = encoding.detect(data);
     let text;
-    console.log(charset)
     if (charset == 'SJIS') {
       text = iconv.decode(data, 'Shift_JIS');
     } else if (charset == 'UTF8') {
@@ -35,8 +34,10 @@ chokidar.watch(resolvedPath).on('change', (filepath, stats) => {
     } else {
       throw "no implementation charset encoding: " + charset;
     }
-    htmlhint(text);
     const ext = path.extname(filepath);
+    if (ext == '.html' || ext == '.htm') {
+      htmlhint(text);
+    }
     textlint(text ,ext);
   });
 });
