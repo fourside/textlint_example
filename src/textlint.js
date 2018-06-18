@@ -1,16 +1,15 @@
 const TextLintEngine = require("textlint").TextLintEngine;
-const engine = new TextLintEngine();
+const textlintSetup = require('./textlint-setup');
 
-const TextLintCore = require("textlint").TextLintCore;
-const linter = new TextLintCore();
+const engine = new TextLintEngine();
+const linter = textlintSetup();
 
 module.exports = (text, ext) => {
   linter.lintText(text, ext).then(results => {
-    console.log(results);
-    if (engine.isErrorResults(results)) {
-      const output = engine.formatResults(results);
-      console.log(output);
-    }
+    //console.log(results);
+    results.messages.forEach((msg) => {
+      console.log("%s:%s %s [%s]", msg.line, msg.column, msg.message, msg.ruleId);
+    });
   });
 }
 

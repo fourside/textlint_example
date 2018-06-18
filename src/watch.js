@@ -36,7 +36,7 @@ chokidar.watch(resolvedPath).on('change', (filepath, stats) => {
     }
     const ext = path.extname(filepath);
     if (ext == '.html' || ext == '.htm') {
-      htmlhint(text);
+      //htmlhint(text);
     }
     textlint(text ,ext);
   });
