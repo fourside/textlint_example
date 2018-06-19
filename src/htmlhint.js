@@ -7,7 +7,7 @@ fs.readFile('./src/.htmlhintrc', "utf-8", (err, data) => {
   HTMLHint.defaultRuleset = JSON.parse(data);
 });
 
-module.exports = function (text) {
+module.exports = (text) => {
   const message = HTMLHint.verify(text);
   message.forEach((msg) => {
     console.log("%s:%s [%s] %s [rule: %s]", msg.line, msg.col, chalk.red(msg.type), msg.message, msg.rule.id);
