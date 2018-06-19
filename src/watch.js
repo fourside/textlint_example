@@ -29,7 +29,7 @@ chokidar.watch(resolvedPath).on('change', (filePath, stats) => {
     let text;
     if (charset == 'SJIS') {
       text = iconv.decode(data, 'Shift_JIS');
-    } else if (charset == 'UTF8') {
+    } else if (charset == 'UTF8' || charset == 'ASCII') {
       text = data.toString('utf-8');
     } else {
       throw "no implementation charset encoding: " + charset;
