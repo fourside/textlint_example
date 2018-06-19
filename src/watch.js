@@ -22,9 +22,9 @@ if (! fs.existsSync(resolvedPath)) {
 
 console.log("start watch at %s ...", resolvedPath);
 
-chokidar.watch(resolvedPath).on('change', (filepath, stats) => {
-  console.log("file change at %s\n", stats.mtime);
-  fs.readFile(filepath, (err, data) => {
+chokidar.watch(resolvedPath).on('change', (filePath, stats) => {
+  console.log("[%s] changed at %s\n", filePath, stats.mtime);
+  fs.readFile(filePath, (err, data) => {
     const charset = encoding.detect(data);
     let text;
     if (charset == 'SJIS') {
@@ -34,7 +34,7 @@ chokidar.watch(resolvedPath).on('change', (filepath, stats) => {
     } else {
       throw "no implementation charset encoding: " + charset;
     }
-    const ext = path.extname(filepath);
+    const ext = path.extname(filePath);
     if (ext == '.html' || ext == '.htm') {
       htmlhint(text);
     }
