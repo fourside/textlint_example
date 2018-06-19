@@ -2,52 +2,42 @@ const fs = require('fs');
 
 const TextLintCore = require("textlint").TextLintCore;
 const htmlPlugin = require("textlint-plugin-html");
-
-const jaNoAbusage = require('textlint-rule-ja-no-abusage');
-const jaNoMixedPeriod = require('textlint-rule-ja-no-mixed-period');
-const jaNoRedundantExpression = require('textlint-rule-ja-no-redundant-expression');
-const jaNoWeakPhrase = require('textlint-rule-ja-no-weak-phrase');
-const jaUnnaturalAlphabet = require('textlint-rule-ja-unnatural-alphabet');
-const ngWord = require('textlint-rule-ng-word');
-const noDoubleNegativeJa = require('textlint-rule-no-double-negative-ja');
-const noDoubledConjunction = require('textlint-rule-no-doubled-conjunction');
-const noDoubledJoshi = require('textlint-rule-no-doubled-joshi');
-const noDroppingTheRa = require('textlint-rule-no-dropping-the-ra');
-const noHankakuKana = require('textlint-rule-no-hankaku-kana');
-const noMixDearuDesumasu  = require('textlint-rule-no-mix-dearu-desumasu' );
-const noMixedZenkakuAndHankakuAlphabet = require('textlint-rule-no-mixed-zenkaku-and-hankaku-alphabet');
-const noNfd = require('textlint-rule-no-nfd');
-const preferTariTari = require('textlint-rule-prefer-tari-tari');
-
+const readPkg = require('read-pkg');
 
 module.exports = () => {
   const linter = new TextLintCore();
   linter.setupPlugins({ html: htmlPlugin });
-  const ruleConfig = getRuleConfig();
-  const rules = getRules();
-  linter.setupRules(rules, ruleConfig);
+
+  getRules().then(rules => {
+    const ruleConfig = getRuleConfig();
+    linter.setupRules(rules, ruleConfig);
+  });
   return linter;
 }
 
+const PREFIX_RULE = 'textlint-rule-';
+
+function getRulePackageNames() {
+  return readPkg().then(pkg => {
+    const devDependencies = pkg.devDependencies;
+    return Object.keys(devDependencies).filter(pkgName => {
+      return pkgName.indexOf(PREFIX_RULE) !== -1;
+    });
+  }).catch(() => {
+    return [];
+  });
+}
+
 function getRules() {
-  return {
-    'no-mix-dearu-desumasu': noMixDearuDesumasu,
-    'ja-no-abusage': jaNoAbusage,
-    'ja-no-mixed-period': jaNoMixedPeriod,
-    'ja-no-redundant-expression': jaNoRedundantExpression,
-    'ja-no-weak-phrase': jaNoWeakPhrase,
-    'ja-unnatural-alphabet': jaUnnaturalAlphabet,
-    'ng-word': ngWord,
-    'no-double-negative-ja': noDoubleNegativeJa,
-    'no-doubled-conjunction': noDoubledConjunction,
-    'no-doubled-joshi': noDoubledJoshi,
-    'no-dropping-the-ra': noDroppingTheRa,
-    'no-hankaku-kana': noHankakuKana,
-    'no-mix-dearu-desumasu': noMixDearuDesumasu,
-    'no-mixed-zenkaku-and-hankaku-alphabet': noMixedZenkakuAndHankakuAlphabet,
-    'no-nfd': noNfd,
-    'prefer-tari-tari': preferTariTari
-  }
+  return getRulePackageNames().then(pkgNames => {
+    const rules = {};
+    pkgNames.forEach(pkgName => {
+      const key = pkgName.replace(PREFIX_RULE, '');
+      const pkg = require(pkgName);
+      rules[key] = pkg;
+    });
+    return rules;
+  });
 }
 
 function getRuleConfig() {

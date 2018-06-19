@@ -17,6 +17,7 @@
     "encoding-japanese": "^1.0.29",
     "htmlhint": "^0.9.13",
     "iconv-lite": "^0.4.23",
+    "read-pkg": "^3.0.0",
     "textlint": "^10.2.1",
     "textlint-plugin-html": "^0.1.7",
     "textlint-rule-ja-no-abusage": "^1.2.1",
