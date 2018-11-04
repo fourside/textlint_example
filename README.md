@@ -11,6 +11,8 @@ you can configurate this by editting `.textlintrc` or `src/.htmlhintrc` or insta
 npm install
 
 ## usage
-npm start {path/to/watch}
+- npm start {path/to/watch}
+- npm watch {path/to/watch}
 
+![screen](https://raw.githubusercontent.com/fourside/textlint_example/master/screen.gif "screen")
 
